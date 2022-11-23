@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Listado de clientes</h1>
+    
+    
+    <ul>
+        {% for cliente in object_list %}
+            <li>
+                <p>Nombre:{{cliente.nombre}}</p>
+                <p>
+                    <a href="{% url 'Detail' cliente.id %}">Ver| </a>
+                    <a href="{% url 'Edit' cliente.id %}">Editar|</a>
+                    <a href="{% url 'Delete' cliente.id %}">Borrar</a>
+                </p>
+
+            </li>
+        
+        {% endfor %}
+    </ul>
+    
+<p>
+    
+    <a href="{% url 'New'  %}">Nuevo</a> 
+    
+</p>
+
+</body>
+</html>

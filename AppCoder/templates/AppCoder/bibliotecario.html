@@ -1,0 +1,25 @@
+{% extends "AppCoder/inicio.html"%}
+
+{% load static %}
+
+{% block herencia %}
+    
+    <h1>Lista de bibliotecarios.</h1>
+
+   <ul>
+    {% for i in bibliotecarios %}
+        <li>{{i}}</li>
+        <button>
+            <a href="">Borrar| </a>
+            <a href="">Actualizar</a>
+        </button>
+        <br>
+    {% endfor %}
+    </ul>
+    <p>
+        <a href="formularioBibliotecario">Agregar</a>
+        
+    </p>    
+    
+
+{% endblock %}

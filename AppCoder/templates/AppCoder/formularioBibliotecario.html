@@ -1,0 +1,39 @@
+{% extends "AppCoder/inicio.html"%}
+
+{% load static %}
+
+{% block herencia %}
+
+  
+
+    <h1>Formulario - Editar Bibliotecario</h1>
+    
+    {% if  miFormularioBibliotecario.errors %}
+
+    <p style="color: red;"> Están mal los datos, revisar</p>
+
+    {% endif %}
+
+
+    <form action="" method="POST">{% csrf_token %}
+
+       
+        <table>
+
+            {{  miFormularioBibliotecario.as_table }}
+
+
+        </table>
+
+
+        <input type="submit", value="Enviar">
+
+    </form>
+  
+
+{% endblock %}
+
+
+
+
+

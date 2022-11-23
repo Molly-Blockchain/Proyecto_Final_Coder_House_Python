@@ -1,0 +1,28 @@
+{% extends "AppCoder/inicio.html"%}
+
+{% load static %}
+
+{% block herencia %}
+
+
+    <h1>Listado de Clientes</h1>
+    
+    
+    <ul>   
+    {% for i in cliente %}
+        <li>{{i}}</li>
+        <button>
+            <a href="{% url 'eliminarCliente' i.nombre %}">Borrar| </a>
+            <a href="{% url 'eliminarCliente' i.nombre %}">Actualizar</a>
+        </button>
+        <br>
+    {% endfor %}      
+    </ul>    
+    <p>
+        <a href="formularioCliente">Agregar</a>
+        
+    </p>
+
+    
+
+{% endblock %}

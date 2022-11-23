@@ -1,0 +1,39 @@
+{% extends "AppCoder/inicio.html"%}
+
+{% load static %}
+
+{% block herencia %}
+
+  
+
+    <h1>Formulario - Editar Cliente/a</h1>
+    
+    {% if  miFormularioCliente.errors %}
+
+    <p style="color: red;"> Están mal los datos, revisar</p>
+
+    {% endif %}
+
+
+    <form action="" method="POST">{% csrf_token %}
+
+       
+        <table>
+
+            {{  miFormularioCliente.as_table }}
+
+
+        </table>
+
+
+        <input type="submit", value="Enviar">
+
+    </form>
+  
+
+{% endblock %}
+
+
+
+
+
