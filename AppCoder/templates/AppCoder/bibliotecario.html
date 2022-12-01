@@ -3,23 +3,26 @@
 {% load static %}
 
 {% block herencia %}
-    
-    <h1>Lista de bibliotecarios.</h1>
 
-   <ul>
-    {% for i in bibliotecarios %}
-        <li>{{i}}</li>
+
+    <h1>Listado de bibliotecarios</h1>
+    
+    
+    <ul>   
+    {% for b in bibliotecarios %}
+        <li>{{b}}</li>
         <button>
-            <a href="">Borrar| </a>
-            <a href="">Actualizar</a>
+            <a href="{% url 'eliminarBibliotecario' b.nombreBibliotecario %}">Borrar| </a>
+            <a href="{% url 'editarBibliotecario' b.apellidoBibliotecario %}">Actualizar</a>
         </button>
         <br>
-    {% endfor %}
-    </ul>
+    {% endfor %}      
+    </ul>    
     <p>
         <a href="formularioBibliotecario">Agregar</a>
         
-    </p>    
+    </p>
+
     
 
 {% endblock %}

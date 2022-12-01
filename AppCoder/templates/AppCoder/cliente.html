@@ -5,15 +5,15 @@
 {% block herencia %}
 
 
-    <h1>Listado de Clientes</h1>
+    <h1>Listado de clientes</h1>
     
     
     <ul>   
-    {% for i in cliente %}
-        <li>{{i}}</li>
+    {% for c in clientes %}
+        <li>{{c}}</li>
         <button>
-            <a href="{% url 'eliminarCliente' i.nombre %}">Borrar| </a>
-            <a href="{% url 'eliminarCliente' i.nombre %}">Actualizar</a>
+            <a href="{% url 'eliminarCliente' c.nombre %}">Borrar| </a>
+            <a href="{% url 'editarCliente' c.nombre %}">Actualizar</a>
         </button>
         <br>
     {% endfor %}      

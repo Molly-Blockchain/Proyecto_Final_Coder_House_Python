@@ -15,9 +15,10 @@ class Migration(migrations.Migration):
             name='Libro',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombreLibro', models.CharField(max_length=100)),
+                ('nombreLibro', models.CharField(max_length=40)),
                 ('anioPublicacion', models.IntegerField()),
-                ('genero', models.CharField(max_length=100)),
+                ('genero', models.CharField(max_length=40)),
+                # borrar
                 ('fechaIngreso', models.DateField()),
                 ('precio', models.IntegerField()),
             ],
@@ -26,8 +27,8 @@ class Migration(migrations.Migration):
             name='Cliente',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombre', models.CharField(max_length=100)),
-                ('apellido', models.CharField(max_length=100)),
+                ('nombre', models.CharField(max_length=40)),
+                ('apellido', models.CharField(max_length=40)),
                 ('telefono', models.IntegerField()),
             ],
         ),
@@ -35,8 +36,9 @@ class Migration(migrations.Migration):
             name='Bibliotecario',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombreBibliotecario', models.CharField(max_length=50)),
+                ('nombreBibliotecario', models.CharField(max_length=40)),
                 ('apellidoBibliotecario', models.CharField(max_length=40)),
+                # borrar
             ],
         ),
     ]

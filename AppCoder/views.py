@@ -1,46 +1,41 @@
-# ___________ Zona de imports ___________
-
 from django.shortcuts import render
 from django.http import HttpResponse
-
-
-# ___________ Importamos modelos y formularios ___________
-
 from AppCoder.forms import LibroFormulario, ClienteFormulario, UserRegisterForm, BibliotecarioFormulario, UserEditForm
-from AppCoder.models import Libro, Cliente, Bibliotecario, Avatar
+from AppCoder.models import Libro, Cliente, Bibliotecario #, Avatar
 
-
-# ___________ CBV ___________
-
+# _____ CVB _____
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-
-# ___________ Inicio de sesión ___________
-
+# _____ Loguin _____
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 
  
 
-# ___________ Creación de vistas ___________
+# _______________ Lista de vistas (funciones) _______________
 
-# ___________ Libro ___________
+# ___________ Vista Libro ___________
 
 def libro(request):
     return render(request, "AppCoder/libro.html")
 
+
 @login_required
 
-def leerLibro(request):
-    libros = Libro.objects.all()
-    contexto = {"libros" : libros}
+
+def leerDocumento(request):
+    documentos = Libro.objects.all()
+    contexto = {"documentos" : documentos}
     return render(request, "AppCoder/libro.html", contexto)
 
-def formularioLibro(request):
+
+# _____ Formulario Libro _____
+
+def formularioDocumento(request):
     if request.method == 'POST':
         miFormulario = LibroFormulario(request.POST)
         print(miFormulario)
@@ -49,90 +44,101 @@ def formularioLibro(request):
             
             informacion = miFormulario.cleaned_data
 		    
-            libro = Libro(
+            documento = Libro(
+                
                 nombreLibro = informacion['nombreLibro'],
                 anioPublicacion = informacion['anioPublicacion'],
                 genero = informacion['genero'],
                 fechaIngreso = informacion['fechaIngreso'],
-                precio = informacion['precio'])
+                precio = informacion['precio']
+                
+                )
 		    
-            libro.save()
+            documento.save()
 
-            libros = Libro.objects.all()
+            documentos = Libro.objects.all()
     
-            return render(request,"AppCoder/libro.html", {"libros" : libros})
+            return render(request, "AppCoder/libro.html", {"documentos" : documentos})
 
     else:
         miFormulario = LibroFormulario()
-    return render(request, "AppCoder/formularioLibro.html", {"miFormulario" : miFormulario})
+    return render(request, "AppCoder/formularioDocumento.html", {"miFormulario" : miFormulario})
 
 
+# _____ Formulario Editar Libro _____
 
-def editarLibro(request, libro_nombre):
+def editarDocumento(request, documento_nombre):
 
-    libro = Libro.objects.get(nombreLibro = libro_nombre)
+    documento = Libro.objects.get(nombreLibro = documento_nombre)
 
     if request.method == 'POST':
-        miFormularioLibro = LibroFormulario(request.POST)
-        print(miFormularioLibro)
+        miFormularioDocumento = LibroFormulario(request.POST)
+        print(miFormularioDocumento)
 
-        if miFormularioLibro.is_valid:
+        if miFormularioDocumento.is_valid:
             
-            informacion = miFormularioLibro.cleaned_data
+            informacion = miFormularioDocumento.cleaned_data
 		    
-            libro.nombreLibro = informacion['nombre libro']
-            libro.anioPublicacion = informacion['anio de publicacion']
-            libro.genero = informacion['genero']
-            libro.fechaIngreso = informacion['fecha de ingreso']
-            libro.precio = informacion['precio']
+            documento.nombreLibro = informacion['nombreLibro']
+            documento.anioPublicacion = informacion['anioPublicacion']
+            documento.genero = informacion['genero']
+            documento.fechaIngreso = informacion['fechaIngreso']
+            documento.precio = informacion['precio']
 		    
-            libro.save()
+            documento.save()
             
             return render(request, "AppCoder/inicio.html")
 
     else:
-        miFormularioLibro = LibroFormulario(
-            initial = {'nombreLibro' : libro.nombreLibro,
-                'anio de publicacion': libro.anioPublicacion, 
-                'genero' : libro.genero,
-                'fecha de ingreso' : libro.fechaIngreso,
-                'precio' : libro.precio})
+        miFormularioDocumento = LibroFormulario(
+            initial =  {'nombreLibro' : documento.nombreLibro,
+                        'anioPublicacion' : documento.anioPublicacion,
+                        'genero' : documento.genero,
+                        'fechaIngreso' : documento.fechaIngreso,
+                        'precio': documento.precio}
+            ) 
     
-    return render(request, "AppCoder/editarLibro.html", {"miFormularioLibro": miFormularioLibro, "libro_nombre" : libro_nombre})
-        
+    return render(request, "AppCoder/editarDocumento.html", {"miFormularioDocumento" : miFormularioDocumento, "documento_nombre" : documento_nombre})
 
 
-def eliminarLibro(request, libro_nombre):
-    libro = Libro.objects.get(nombreLibro = libro_nombre)
-    libro.delete()
-    libros = Libro.objects.all()
-    contexto = {"libros" : libros}
-    return render(request,"AppCoder/libro.html", contexto)
+# _____ Eliminar Libro _____
+
+def eliminarDocumento(request, documento_nombre):
+    documento = Libro.objects.get(nombreLibro = documento_nombre)
+    documento.delete()
+    documentos = Libro.objects.all()
+    contexto = {"documentos" : documentos}
+    return render(request, "AppCoder/libro.html", contexto)
 
 
 @login_required
 
-def busquedaLibro(request):
-    return render(request, "AppCoder/busquedaLibro.html")
-    
 
+# _____ Buscar Libro _____
+
+def busquedaDocumento(request):
+    return render(request, "AppCoder/busquedaDocumento.html")
+
+    
 @login_required
+
 
 def buscar(request):
         
     if request.GET["nombreLibro"]:
         nombreLibro = request.GET['nombreLibro']
-        libros = Libro.objects.filter(nombreLibro__icontains = nombreLibro)
+        documentos = Libro.objects.filter(nombreLibro__icontains = nombreLibro)
         
-        return render(request, "AppCoder/libro.html", {"libros" : libros})
+        return render(request, "AppCoder/libro.html", {"documentos" : documentos})
 
     else:
         respuesta = "No enviaste nada"
     return render(request, "AppCoder/inicio.html", {"respuesta" : respuesta})
 
 
+# ___________ Vista Cliente ___________
 
-# ___________ Cliente ___________
+# _____ Vista Cliente _____
 
 def cliente(request):
     return render(request, "AppCoder/cliente.html")
@@ -140,11 +146,14 @@ def cliente(request):
 
 @login_required
 
+
 def leerCliente(request):
     clientes = Cliente.objects.all()
     contexto = {"clientes" : clientes}
     return render(request, "AppCoder/cliente.html", contexto)
 
+
+# _____ Formulario Cliente _____
 
 def formularioCliente(request):
 
@@ -157,21 +166,24 @@ def formularioCliente(request):
             informacion = miFormularioCliente.cleaned_data
 		    
             cliente = Cliente(
+                
                 nombre = informacion['nombre'],
                 apellido = informacion['apellido'],
-                telefono = informacion['telefono'])
+                telefono = informacion['telefono']
+                )
 		    
             cliente.save()
 
             clientes = Cliente.objects.all()
             
-            return render(request,"AppCoder/cliente.html", {"clientes" : clientes})
+            return render(request, "AppCoder/cliente.html", {"clientes" : clientes})
 
     else:
         miFormularioCliente = ClienteFormulario()
     return render(request, "AppCoder/formularioCliente.html", {"miFormularioCliente" : miFormularioCliente})
 
 
+# _____ Formulario Editar Cliente _____
 
 def editarCliente(request, cliente_nombre):
 
@@ -194,24 +206,29 @@ def editarCliente(request, cliente_nombre):
             return render(request, "AppCoder/inicio.html")
 
     else:
-        miFormularioCliente = ClienteFormulario(
-            initial = {'nombre': cliente.nombre,
+        miFormularioCliente = ClienteFormulario(initial = {
+            'nombre' : cliente.nombre,
             'apellido' : cliente.apellido,
-            'telefono' : cliente.telefono}) 
+            'telefono' : cliente.telefono
+            }) 
     
-    return render(request, "AppCoder/editarCliente.html", {"miFormularioCliente" : miFormularioCliente, "cliente_nombre" : cliente_nombre})
-        
+    return render(request, "AppCoder/editarCliente.html", {
+        "miFormularioCliente" : miFormularioCliente,
+        "cliente_nombre" : cliente_nombre
+        })
+
+
+# _____ Eliminar Cliente _____
 
 def eliminarCliente(request, cliente_nombre):
     cliente = Cliente.objects.get(nombre = cliente_nombre)
     cliente.delete()
     clientes = Cliente.objects.all()
     contexto = {"clientes" : clientes}
-    return render(request,"AppCoder/cliente.html", contexto)
+    return render(request, "AppCoder/cliente.html", contexto)
 
 
-
-# ___________ Cliente (CBV, herencia) ___________
+# ___________ Cliente CBV ___________
 
 class ClienteList(ListView):
     model = Cliente
@@ -225,33 +242,39 @@ class ClienteDetalle(DetailView):
 class ClienteCreacion(CreateView):
     model = Cliente
     succcess_url = "/AppCoder/cliente/list"	
-    fields = ['nombre','apellido','telefono']
+    fields = ['nombre', 'apellido', 'telefono']
 
 
-class ClienteUpdate(UpdateView):    
+class ClienteUpdate(UpdateView):
+    
     model = Cliente
     succcess_url = "/AppCoder/cliente/list"	
-    fields = ['nombre','apellido','telefono']
+    fields = ['nombre', 'apellido', 'telefono']
 
 
-class ClienteDelete(DeleteView):
+class CursoDelete(DeleteView):  
     model = Cliente
-    succcess_url = "/AppCoder/cliente/list"
+    succcess_url = "/AppCoder/cliente/list"	
 
 
+# ___________ Vista Bibliotecario ___________
 
-# ___________ Bibliotecario ___________
+# _____ Vista Bibliotecario _____
 
 def bibliotecario(request):
-    return render(request,"AppCoder/bibliotecario.html")
+    return render(request, "AppCoder/bibliotecario.html")
 
 
 @login_required
 
+
 def leerBibliotecario(request):
     bibliotecarios = Bibliotecario.objects.all()
     contexto = {"bibliotecarios" : bibliotecarios}
-    return render(request,"AppCoder/bibliotecario.html", contexto)
+    return render(request, "AppCoder/bibliotecario.html", contexto)
+
+
+# _____ Formulario Bibliotecario _____
 
 def formularioBibliotecario(request):
 
@@ -264,23 +287,67 @@ def formularioBibliotecario(request):
             informacion = miFormularioBibliotecario.cleaned_data
 		    
             bibliotecario = Bibliotecario(
+                
                 nombreBibliotecario = informacion['nombreBibliotecario'],
-                apellidoBibliotecario = informacion['apellidoBibliotecario'])
+                apellidoBibliotecario = informacion['apellidoBibliotecario']
+                )
 		    
             bibliotecario.save()
 
             bibliotecarios = Bibliotecario.objects.all()
             
             contexto = {"bibliotecarios" : bibliotecarios}
-            return render(request,"AppCoder/bibliotecario.html", contexto)
+            return render(request, "AppCoder/bibliotecario.html", contexto)
 
     else:
         miFormularioBibliotecario = BibliotecarioFormulario()
     return render(request, "AppCoder/formularioBibliotecario.html", {"miFormularioBibliotecario" : miFormularioBibliotecario})
 
 
+# _____ Formulario Editar Bibliotecario _____
 
-# ___________ Login & Registro de usuarios ___________
+def editarBibliotecario(request, bibliotecario_nombre):
+
+    bibliotecario = Bibliotecario.objects.get(nombreBibliotecario = bibliotecario_nombre)
+
+    if request.method == 'POST':
+        miFormularioBibliotecario = BibliotecarioFormulario(request.POST)
+        print(miFormularioBibliotecario)
+
+        if miFormularioBibliotecario.is_valid:
+            
+            informacion = miFormularioBibliotecario.cleaned_data
+		    
+            bibliotecario.nombreBibliotecario = informacion['nombreBibliotecario']
+            bibliotecario.apellidoBibliotecario = informacion['apellidoBibliotecario']
+            
+            bibliotecario.save()
+            
+            return render(request, "AppCoder/inicio.html")
+
+    else:
+        miFormularioBibliotecario = BibliotecarioFormulario(initial = {
+            'nombreBibliotecario' : bibliotecario.nombreBibliotecario,
+            'apellidoBibliotecario' : bibliotecario.apellidoBibliotecario
+            }) 
+    
+    return render(request, "AppCoder/editarBibliotecario.html", {
+        "miFormularioBibliotecario" : miFormularioBibliotecario,
+        "bibliotecario_nombre" : bibliotecario_nombre
+        })
+
+
+# _____ Eliminar Bibliotecario _____
+
+def eliminarBibliotecario(request, bibliotecario_nombre):
+    bibliotecario = Bibliotecario.objects.get(nombreBibliotecario = bibliotecario_nombre)
+    bibliotecario.delete()
+    bibliotecarios = Bibliotecario.objects.all()
+    contexto = {"bilbiotecarios" : bibliotecarios}
+    return render(request, "AppCoder/bibliotecario.html", contexto)
+
+
+# ___________ Loguin/Register ___________
 
 def login_request(request):
     if request.method == 'POST':
@@ -330,6 +397,7 @@ def inicio(request):
 
 @login_required
 
+
 def editarPerfil(request):
     usuario = request.user
     if request.method == 'POST':
@@ -345,20 +413,14 @@ def editarPerfil(request):
             return render(request, "AppCoder/inicio.html")
     else:
 
-        miFormulario = UserEditForm(initial={'email' : usuario.email})
+        miFormulario = UserEditForm(initial = {'email' : usuario.email})
     return render(request, "AppCoder/editarPerfil.html", {"miFormulario" : miFormulario, "usuario" : usuario})
 
 
+# ___________ Vista Avatar ___________
 
-'''
+# @login_required
+# def inicio(request):
+#     avatares = Avatar.objects.filter(user=request.user.id)
 
-# ___________ Avatar ___________
-
-@login_required
-
-def inicio(request):
-    avatares = Avatar.objects.filter(user = request.user.id)
-
-    return render(request, "AppCoder/inicio.html", {"url" : avatares[0].imagen.url})
-
-'''
+#     return render(request,"AppCoder/inicio.html", {"url":avatares[0].imagen.url})

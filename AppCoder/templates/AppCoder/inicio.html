@@ -21,10 +21,10 @@
          <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
                 <a class="navbar-brand" href="{% url 'inicio' %}">Inicio</a>
-                <a class="navbar-brand" href="{% url 'leerLibro' %}">Libros</a>
+                <a class="navbar-brand" href="{% url 'leerDocumento' %}">Libros</a>
                 <a class="navbar-brand" href="{% url 'leerCliente' %}">Cliente</a>
                 <a class="navbar-brand" href="{% url 'leerBibliotecario' %}">Bibliotecario</a>
-                <a class="navbar-brand" href="{% url 'busquedaLibro' %}">Busqueda</a>
+                <a class="navbar-brand" href="{% url 'busquedaDocumento' %}">Busqueda</a>
                 <a class="navbar-brand" href="{% url 'Logout' %}">Cerrar Sesion</a>
                 
                
@@ -35,7 +35,7 @@
 
                 {% if request.user.is_authenticated %}
                 <img src="{{url}}" style="height: 40px; width: 40px; ">
-                <h3 class="text-muted small mb-4 mb-lg-0">Hola, {{user.username}}.</h3>
+                <h3 class="text-muted small mb-4 mb-lg-0">Hola,{{user.username}}.</h3>
 
                 {% endif %}
 
@@ -66,8 +66,8 @@
                                 <!-- has successfully submitted-->
                                 <div class="d-none" id="submitSuccessMessage">
                                     <div class="text-center mb-3">
-                                        <div class="fw-bolder"> ¡Formulario enviado con éxito! </div>
-                                        <p> Para activar el formulario, inicie sesión. </p>
+                                        <div class="fw-bolder">Form submission successful!</div>
+                                        <p>To activate this form, sign up at</p>
                                         <a class="text-white" href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@
                                 <!---->
                                 <!-- This is what your users will see when there is-->
                                 <!-- an error submitting the form-->
-                                <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3"> ¡Error al enviar el mensaje! </div></div>
+                                <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                             </form>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                             <li class="list-inline-item">⋅</li>
                             <li class="list-inline-item"><a href="#!">Política de privacidad</a></li>
                         </ul>
-                        <p class="text-muted small mb-4 mb-lg-0">&copy; Biblioteca "El estudiante". Todos los derechos reservados.</p>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; Biblioteca "El estudiante" 2022. Todos los derechos reservados.</p>
                     </div>
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">

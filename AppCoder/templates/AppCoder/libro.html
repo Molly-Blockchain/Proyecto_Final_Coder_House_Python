@@ -4,22 +4,22 @@
 
 {% block herencia %}
     
-    <h1>Lista de libros</h1>
+    <h1>Lista de libros.</h1>
 
-   {% if libro %}
+   {% if documentos %}
 
         <ul>
-        {% for i in libros %}
-            <li>{{i}}</li>
+        {% for d in documentos %}
+            <li>{{d}}</li>
             <button>
-                <a href="{% url 'eliminarLibro' i.nombreLibro %}">Borrar| </a>
-                <a href="{% url 'editarLibro' i.nombreLibro %}">Actualizar</a>
+                <a href="{% url 'eliminarDocumento' d.nombreLibro %}">Borrar| </a>
+                <a href="{% url 'editarDocumento' d.nombreLibro %}">Actualizar</a>
             </button>
             <br>
         {% endfor %}
         </ul>
         <p>
-            <a href="formularioLibro">Agregar</a>
+            <a href="formularioDocumento">Agregar</a>
             
         </p>
     
